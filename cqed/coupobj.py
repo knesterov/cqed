@@ -338,11 +338,12 @@ class CoupledObjects(object):
             eigvals, eigvecs = self.H().eigenstates()
             state_labels = np.empty((self._nlev, 2), dtype=object)
             _, eigvecs_nonint, labels_nonint = self._spectrum_nonint()
+            indices = np.zeros(self._nlev, dtype=int)
             for ind, vec in enumerate(eigvecs):
                 # Find the noninteracting state corresponding to vec.
                 indmax = np.argmax([np.abs(vec.overlap(eigvecs_nonint[k]))
                                     for k in range(self._nlev)])
-                state_labels[ind, :] = labels_nonint[indmax, :]
+                indices[ind] = indmax
                 # Adjust the phase (sign) of the interacting state
                 # to match the noninteracting one and
                 # to keep the same sign among different machines.
@@ -352,6 +353,9 @@ class CoupledObjects(object):
                         eigvecs[ind] *= -1
                     else:
                         eigvecs[ind] *= np.exp(1j*phase)
+            # Make sure that there are no identical indices.
+            indices = np.argsort(np.argsort(indices))
+            state_labels = labels_nonint[indices, :]
             self._eigvals = eigvals
             self._eigvecs = eigvecs
             self._state_labels = state_labels
