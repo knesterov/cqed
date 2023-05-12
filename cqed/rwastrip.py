@@ -83,7 +83,7 @@ class RWAStrip(object):
         float
             Energy of the level.
         """
-        if level_ind < 0 or level_ind >= self.nlev-1:
+        if level_ind < 0 or level_ind >= self.nlev:
             raise Exception('The level is out of bounds')
         return self.levels_nonint()[level_ind]
 
@@ -150,7 +150,7 @@ class RWAStrip(object):
         float
             Energy of the level.
         """
-        if level_ind < 0 or level_ind >= self.nlev-1:
+        if level_ind < 0 or level_ind >= self.nlev:
             raise Exception('The level is out of bounds')
         return self.levels(interaction=interaction)[level_ind]
 
@@ -199,6 +199,6 @@ class RWAStrip(object):
         --------
         levels
         """
-        if level_ind < 0 or level_ind >= self.nlev-1:
+        if level_ind < 0 or level_ind >= self.nlev:
             raise Exception('The level is out of bounds')
         return self.eigvecs(interaction=interaction)[level_ind]
